@@ -2,6 +2,9 @@
 package com.example.atelier
 
 import android.os.Bundle
+import android.content.res.Configuration
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -167,6 +170,14 @@ fun AtelierScreen() {
 @Composable
 fun ArchiveCard(item: ArchiveItem) {
     var expanded by remember { mutableStateOf(false) }
+    val cardColor by animateColorAsState(
+        targetValue = if (expanded) {
+            MaterialTheme.colorScheme.primaryContainer
+        } else {
+            MaterialTheme.colorScheme.surfaceVariant
+        },
+        label = "cardColor"
+    )
 
     Card(
         modifier = Modifier
@@ -175,7 +186,7 @@ fun ArchiveCard(item: ArchiveItem) {
             .clickable { expanded = !expanded },
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
+            containerColor = cardColor
         )
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -212,5 +223,27 @@ fun ArchiveCard(item: ArchiveItem) {
                 style = MaterialTheme.typography.labelMedium
             )
         }
+    }
+}
+@Preview(
+    showBackground = true,
+    name = "ATELIER — светлая тема"
+)
+@Composable
+fun AtelierLightPreview() {
+    ATELIERTheme {
+        AtelierScreen()
+    }
+}
+
+@Preview(
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    name = "ATELIER — тёмная тема"
+)
+@Composable
+fun AtelierDarkPreview() {
+    ATELIERTheme {
+        AtelierScreen()
     }
 }
